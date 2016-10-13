@@ -1,0 +1,47 @@
+.grand-total {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.error {
+  margin-top: 0;
+}
+.has-error, .has-error label {
+  color: darkred !important;
+}
+.has-error input {
+  border-bottom: 1px solid darkred !important;
+  box-shadow: 0 1px 0 0 darkred !important;
+}
+.cart-title {
+  width: 100%;
+}
+.price {
+  position: absolute;
+  right: 25px;
+}
+ul {
+  margin: 0;
+}
+td {
+  padding: 5px !important;
+}
+.btn {
+  margin-top: 20px;
+  width: 100%;
+}
+.card-content {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+@media only screen and (min-width : 992px) and (min-height : 470px) {
+  .cart-container {
+    position: relative;
+  }
+  .cart {
+    position: fixed;
+    width: 300px;
+    max-height: 450px;
+    overflow-y: scroll;
+  }
+}

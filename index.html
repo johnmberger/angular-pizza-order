@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html ng-app="pizzaApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Order | Pizza Planet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <link type="text/css" rel="stylesheet" href="style.css">
+  </head>
+  <body ng-controller="pizzaCtrl as pizzaController" ng-cloak>
+    <main class="container">
+      <div class="row">
+        <div class="col m8">
+          <img src="https://ih0.redbubble.net/image.106873228.1219/sticker,220x200-pad,220x200,ffffff.u3.jpg" alt="pizza planet" />
+          <form name="userForm" ng-submit="pizzaController.submit()">
+            <div class="col s12 input-field">
+              <h4>Delivery Option</h4>
+              <select name="delivery" ng-model="pizzaController.deliveryOption" ng-change="pizzaController.updatePricing()">
+                <option value="pickup">Pickup</option>
+                <option value="delivery">Delivery</option>
+              </select>
+            </div>
+            <div class="col s12">
+              <h4>Pizza Options</h4>
+            </div>
+            <div class="col s4 input-field">
+              <select name="size" ng-model="pizzaController.size" ng-change="pizzaController.updatePricing()">
+                <option value="Small">Small</option>
+                <option value="Medium">Medium</option>
+                <option value="Large">Large</option>
+                <option value="X-Large">X-Large</option>
+              </select>
+              <label for="size">Size</label>
+            </div>
+            <div class="col s4 input-field">
+              <select name="crust" ng-model="pizzaController.crust">
+                <option value="White">White</option>
+                <option value="Wheat">Wheat</option>
+                <option value="Gluten-Free">Gluten-Free</option>
+              </select>
+              <label for="crust">Crust</label>
+            </div>
+            <div class="col s4 input-field">
+              <select name="sauce" ng-model="pizzaController.sauce">
+                <option value="Tomato">Tomato</option>
+                <option value="Creamy-White">Creamy White</option>
+                <option value="BBQ">BBQ</option>
+              </select>
+              <label for="sauce">Sauce</label>
+            </div>
+            <div class="col s12">
+              <h4>Toppings</h4>
+              <div class="col s12">
+                <p ng-repeat="topping in pizzaController.toppings">
+                  <input type="checkbox" id="{{topping.id}}" ng-click="pizzaController.addTopping(topping); pizzaController.updatePricing()" />
+                  <label for="{{topping.id}}">{{topping.name}}</label>
+                </p>
+              </div>
+            </div>
+            <div class="col s12">
+              <br>
+              <br>
+              <h4>Contact Info</h4>
+              <!-- name -->
+              <div class="col s12 input-field" ng-class="{ 'has-error' : userForm.name.$invalid && !userForm.name.$pristine }">
+                <label for="name">Full Name</label>
+                <input type="text" name="name" id="name" ng-model="user.name" required>
+                <p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="error">You name is required.</p>
+              </div>
+              <!-- email -->
+              <div class="col s12 input-field" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
+                <input type="email" name="email" ng-model="user.email" id="email" required>
+                <label for="email">Email</label>
+                <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="error">Valid email is required</p>
+              </div>
+              <!-- phone number -->
+              <div class="col s12 input-field" ng-class="{ 'has-error' : userForm.phone.$invalid && !userForm.phone.$pristine }">
+                <label for="phone">Phone Number</label>
+                <input type="text" name="phone" id="phone" ng-model="user.phone" ng-minlength="7" required>
+                <p ng-show="userForm.phone.$invalid && !userForm.phone.$pristine" class="error">Phone number is required.</p>
+              </div>
+            </div>
+            <div class="col s12" ng-if="pizzaController.deliveryOption === 'delivery'">
+              <!-- address line 1 -->
+              <div class="col s12 input-field" ng-class="{ 'has-error' : userForm.line1.$invalid && !userForm.line1.$pristine }">
+                <label for="line1">Address Line 1</label>
+                <input type="text" name="line1" id="line1" ng-model="user.line1" ng-required="pizzaController.deliveryOption === 'delivery'">
+                <p ng-show="userForm.line1.$invalid && !userForm.line1.$pristine" class="error">You address is required.</p>
+              </div>
+              <!-- address line 2 -->
+              <div class="col s12 input-field">
+                <label for="line2">Address Line 2</label>
+                <input type="text" name="line2" id="line2" ng-model="user.line2">
+              </div>
+              <!-- city -->
+              <div class="col s12 input-field" ng-class="{ 'has-error' : userForm.city.$invalid && !userForm.city.$pristine }">
+                <label for="city">City</label>
+                <input type="text" name="city" id="city" ng-model="user.city" ng-required="pizzaController.deliveryOption === 'delivery'">
+                <p ng-show="userForm.city.$invalid && !userForm.city.$pristine" class="error">City is required.</p>
+              </div>
+              <!-- state -->
+              <div class="col s6 input-field" ng-class="{ 'has-error' : userForm.state.$invalid && !userForm.state.$pristine }">
+                <label for="state">State</label>
+                <input type="text" name="state" id="state" ng-model="user.state" required ng-minlength="2" ng-maxlength="2" ng-required="pizzaController.deliveryOption === 'delivery'">
+                <p ng-show="userForm.state.$invalid && !userForm.state.$pristine" class="error">Use abbreviation (e.g. 'CO')</p>
+              </div>
+              <!-- zip -->
+              <div class="col s6 input-field" ng-class="{ 'has-error' : userForm.zip.$invalid && !userForm.zip.$pristine }">
+                <label for="zip">Zip Code</label>
+                <input type="number" name="zip" id="zip" ng-model="user.zip" required ng-minlength="5" ng-maxlength="5" ng-required="pizzaController.deliveryOption === 'delivery'">
+                <p ng-show="userForm.zip.$invalid && !userForm.zip.$pristine" class="error">6-digit zip is required</p>
+              </div>
+              <!-- delivery note -->
+              <div class="col s12 input-field">
+                <label for="note">Delivery Note</label>
+                <textarea type="text" name="note" id="note" class="materialize-textarea" ng-model="user.note"></textarea>
+              </div>
+            </div>
+            <div class="col m12">
+              <input href="#" type="submit" value="Submit Order" class="btn orange btn-large" />
+            </div>
+          </form>
+        </div>
+        <div class="col l4 m12 cart-container">
+          <div class="card red darken-4 cart">
+            <div class="card-content white-text">
+              <span class="card-title">Your Order</span>
+            </div>
+            <div class="card-content">
+              <ul>
+                <li class="white-text">{{pizzaController.size}} {{pizzaController.selectedToppings.length}} Topping Pizza</li>
+                <br>
+                <li class="white-text">{{pizzaController.crust}} Crust</li>
+                <li class="white-text">{{pizzaController.sauce}} Sauce</li>
+                <li class="white-text" ng-repeat="topping in pizzaController.selectedToppings">{{topping.name}} <span class="price">{{topping.price | currency}}</span></li>
+              </ul>
+            </div>
+            <div class="card-content">
+              <table>
+                <tbody class="white-text">
+                  <tr>
+                    <td>Subtotal</td>
+                    <td class="right-align">{{pizzaController.subtotal | currency}}</td>
+                  </tr>
+                  <tr ng-if="pizzaController.deliveryOption === 'delivery'">
+                    <td>Delivery</td>
+                    <td class="right-align">{{pizzaController.deliveryFee | currency}}</td>
+                  </tr>
+                  <tr>
+                    <td>Tax</td>
+                    <td class="right-align">{{(pizzaController.subtotal + pizzaController.deliveryFee) * .08 | currency}}</td>
+                  </tr>
+                  <tr>
+                    <td class="grand-total">Grand Total</td>
+                    <td class="right-align grand-total">{{(pizzaController.subtotal + pizzaController.deliveryFee) * 1.08  | currency}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  <!-- scripts -->
+  <script src="http://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+  <script src="app.js"></script>
+  <script src="controllers.js"></script>
+  </body>
+</html>
