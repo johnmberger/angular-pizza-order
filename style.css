@@ -8,7 +8,7 @@
 .has-error, .has-error label {
   color: darkred !important;
 }
-.has-error input {
+.has-error {
   border-bottom: 1px solid darkred !important;
   box-shadow: 0 1px 0 0 darkred !important;
 }

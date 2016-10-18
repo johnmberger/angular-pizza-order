@@ -64,7 +64,7 @@
               <div class="col s12 input-field" ng-class="{ 'has-error' : userForm.name.$invalid && !userForm.name.$pristine }">
                 <label for="name">Full Name</label>
                 <input type="text" name="name" id="name" ng-model="user.name" required>
-                <p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="error">You name is required.</p>
+                <p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="error">Name is required.</p>
               </div>
               <!-- email -->
               <div class="col s12 input-field" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
@@ -84,7 +84,7 @@
               <div class="col s12 input-field" ng-class="{ 'has-error' : userForm.line1.$invalid && !userForm.line1.$pristine }">
                 <label for="line1">Address Line 1</label>
                 <input type="text" name="line1" id="line1" ng-model="user.line1" ng-required="pizzaController.deliveryOption === 'delivery'">
-                <p ng-show="userForm.line1.$invalid && !userForm.line1.$pristine" class="error">You address is required.</p>
+                <p ng-show="userForm.line1.$invalid && !userForm.line1.$pristine" class="error">Address is required.</p>
               </div>
               <!-- address line 2 -->
               <div class="col s12 input-field">
